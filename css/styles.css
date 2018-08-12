@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  height: 100vh;
+  font-size: 17px;
+}
+
+/* flexboxes: */
+main,
+section,
+article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+main {
+  height: 100vh;
+  background-image: url(https://source.unsplash.com/TeX_yWATaBA/1500x1500);
+  background-size:cover;
+  background-position:center;
+}
+
+section {
+  background: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(246,246,246,0.65) 47%, rgba(237,237,237,0.65) 100%);
+  color: #14213D;
+  text-align: center;
+  padding: 25px;
+  box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
+  border: 1px solid #FFFDF9;
+  border-radius: 5px;
+  /* width: 100vw;
+  height: 100vh; */
+}
+
+.image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
+  background: #7485AA;
+  margin-top: 5px;
+}
+
+h1 {
+  font-family: 'Poiret One', sans-serif;
+}
+
+h1, h2 {
+  padding: 10px 0;
+  text-align: center;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  text-align: center;
+  background: #14213D;
+  color: #C4C3C0;
+  padding: 25px;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+footer a {
+  color: #779182;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+}
