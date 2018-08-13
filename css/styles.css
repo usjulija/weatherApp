@@ -45,6 +45,34 @@ section {
   height: 100vh;
 }
 
+button {
+  width: 50px;
+  height:50px;
+  border-radius: 50%;
+  border: 0;
+  background: #7485AA;
+  box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+button svg {
+  padding: 5px;
+  max-width: 50px;
+}
+
+button:hover,
+button:focus {
+  background: #BF5B00;
+  outline: 0;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .image {
   height: 50px;
   width: 50px;
@@ -114,7 +142,7 @@ footer a {
   .forecast > * {
     flex: 25%;
   }
-  
+
 }
 
 @media screen and (min-width: 850px) {
