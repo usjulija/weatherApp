@@ -12,7 +12,6 @@ Project is inspired by freeCodeCamp challenge. Project is built using JavaScript
 Clone repository and open index.html file.
 
 ## App preview
-[Online preview](https://usjulija.github.io/weatherApp/)
-![App preview](https://image.ibb.co/mRM7gU/ipad.jpg)
-Mobile version:
-![App preview](https://image.ibb.co/cNpPvp/mobile.jpg)
+* ![App preview](https://image.ibb.co/mRM7gU/ipad.jpg)
+* Mobile version:
+* ![App preview](https://image.ibb.co/cNpPvp/mobile.jpg)
