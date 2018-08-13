@@ -11,8 +11,7 @@ function getLocation() {
   function success(position) {
     let latitude  = position.coords.latitude;
     let longitude = position.coords.longitude;
-    console.log(`lat: ${latitude}; lng: ${longitude}`);
-
+    console.log(latitude, longitude);
     let unsplashUrl;
     //fetch weather data for current location
     const apiKey = "6df34740c7766e4c99784637a68ebe70";
@@ -20,25 +19,19 @@ function getLocation() {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-
-        //get the 5 days and save them as array of objects
+        //get 5 days and save them as array of objects
         let forecastData = [];
         forecastData.push(data.list['0']);
         forecastData.push(data.list['8']);
         forecastData.push(data.list['16']);
         forecastData.push(data.list['24']);
         forecastData.push(data.list['32']);
-        console.log(forecastData);
 
         //filter out only needed information, convert date to the day of weeks
         let forecast = [];
         forecastData.forEach((day) => {
-          //if (index < 1) return; //do not save the first item in the array
-
           //convert date to the week day
           let dayNumber = new Date(day.dt * 1000).getDay();
-          console.log(dayNumber);
 
           let dayData = {
             "dayOfWeek": convertDayOfWeek(dayNumber),
@@ -50,8 +43,7 @@ function getLocation() {
           forecast.push(dayData);
         });
 
-        console.log(forecast);
-
+        //display informationin the app
         main.innerHTML = `
         <div class="button-container">
           <h2><span>${data.city.name}</span>, <span>${data.city.country}</span></h2>
@@ -112,14 +104,23 @@ function getLocation() {
         unsplashUrl = `https://api.unsplash.com/search/photos?page=1&query=${data.list['0'].weather['0'].main}`;
         fetchUnsplash(unsplashUrl);
       })
-      .catch(() => console.log("error with weather API"));
+      .catch(() => {
+        console.log("error with weather API");
+        main.innerHTML = "<p>Sorry, not possible to  get data on current weather, please try again later</p>";
+      });
   }
 
   function error() {
-    main.innerHTML = "Unable to retrieve your location";
+    main.innerHTML = "<p>We were unable to retrieve your location, please allow browser to know your current location</p>";
   }
 
-  main.innerHTML = "<p>Locating…</p>";
+  main.innerHTML = `
+    <div class='locating'>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 560 560" width=50>
+        <path fill="#14213D" d="M49 372c1 4 5 7 9 7l4-1c5-1 8-7 6-13A233 233 0 0 1 285 52c63-1 122 23 166 67h-26c-6 0-10 5-10 10 0 6 5 11 10 11l51-1a10 10 0 0 0 11-10l-1-52c0-5-5-10-10-10-6 0-11 5-11 11l1 26a253 253 0 0 0-360 4 254 254 0 0 0-57 264zm0 0M455 450c-90 92-238 93-330 4l26-1c6 0 10-5 10-10 0-6-5-10-10-10h-51c-6 0-11 5-11 11l1 51c0 5 5 10 10 10 6 0 11-5 11-10l-1-27a254 254 0 0 0 427-130c10-46 6-94-10-138-1-5-7-8-13-6-5 2-8 8-6 13 31 85 10 178-53 243zm0 0"/>
+      </svg>
+    </div>
+    <p>...Locating</p>`;
 
   navigator.geolocation.getCurrentPosition(success, error);
 }
@@ -157,7 +158,7 @@ function convertDayOfWeek(dateNumber) {
 function fetchUnsplash(unsplashUrl) {
   //fetch background image depending on weather summary
   let background = document.getElementById('background');
-  console.log(unsplashUrl);
+
   fetch(unsplashUrl, {
     headers: {
       Authorization: 'Client-ID 73848e2ce82fbdcd2e3231097715e99a0d340f66efa2984701e7b81111e13924'
@@ -165,13 +166,12 @@ function fetchUnsplash(unsplashUrl) {
     })
   .then(response => response.json())
   .then(data => {
-    console.log(data)
     background.style.backgroundImage = `url(${data.results['0'].urls.regular})`;
   })
   .catch(() => console.log('An error occured from Unsplash'));
 }
 
-//C to F and back converter
+//Celsius to Fahrenheit and back converter
 function temperatureToggle() {
   let temperatures = document.querySelectorAll('.temperature');
   console.log(temperatures);
@@ -179,14 +179,12 @@ function temperatureToggle() {
     if (item.classList.contains('C')) {
       let oldValue = parseFloat(item.innerHTML);
       let newValue = Math.round((oldValue*1.8)+32);
-      console.log(newValue);
       item.classList.remove('C');
       item.classList.add('F');
       item.innerHTML = `${newValue}&#176 F`;
     } else if (item.classList.contains('F')) {
       let oldValue = parseFloat(item.innerHTML);
       let newValue = Math.round((oldValue-32)/1.8);
-      console.log(newValue);
       item.classList.remove('F');
       item.classList.add('C');
       item.innerHTML = `${newValue}&#176 C`;

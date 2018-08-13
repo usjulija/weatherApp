@@ -23,7 +23,7 @@ article {
 }
 
 main {
-  height: 100vh;
+  min-height: 100vh;
   background-image: url(https://source.unsplash.com/TeX_yWATaBA/1500x1500);
   background-size:cover;
   background-position:center;
@@ -41,8 +41,8 @@ section {
   box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
   /* border: 1px solid #FFFDF9;
   border-radius: 5px; */
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 button {
@@ -131,12 +131,49 @@ footer a {
   font-family: 'Open Sans', sans-serif;
 }
 
+.locating svg {
+  padding: 8px;
+
+	animation-name: locating;
+	-webkit-animation-name: locating;
+
+	animation-duration: 2.5s;
+	-webkit-animation-duration: 2.5s;
+
+	animation-iteration-count: infinite;
+	-webkit-animation-iteration-count: infinite;
+}
+
+@keyframes locating {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(359deg);
+	}
+}
+
+@-webkit-keyframes locating {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	50% {
+		-webkit-transform: rotate(180deg);
+	}
+	100% {
+		-webkit-transform: rotate(359deg);
+	}
+}
+
 @media screen and (min-width: 650px) {
   section {
     border: 1px solid #FFFDF9;
     border-radius: 5px;
-    width: 80%;
-    height: auto;
+    min-width: 80%;
+    min-height: auto;
   }
 
   .forecast > * {
