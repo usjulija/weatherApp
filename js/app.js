@@ -15,7 +15,7 @@ function getLocation() {
     let unsplashUrl;
     //fetch weather data for current location
     const apiKey = "6df34740c7766e4c99784637a68ebe70";
-    let url = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+    let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
     fetch(url)
       .then(response => response.json())
       .then(data => {

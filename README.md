@@ -12,7 +12,7 @@ Project is inspired by freeCodeCamp challenge. Project is built using JavaScript
 Clone repository and open index.html file.
 
 ## App preview
-[Online preview](https://nationalparkseurope.herokuapp.com/)
-![App preview](https://image.ibb.co/kG2Yo9/D_Julia_1_Julia_Documents_Coding_Lessons_free_Code_Camp_challenges_weather_app_index_html_i_Pad_Mini.png)
+[Online preview](https://usjulija.github.io/weatherApp/)
+![App preview](https://image.ibb.co/mRM7gU/ipad.jpg)
 Mobile version:
-![App preview](https://image.ibb.co/fkD1ap/D_Julia_1_Julia_Documents_Coding_Lessons_free_Code_Camp_challenges_weather_app_index_html_i_Phone_X.png)
+![App preview](https://image.ibb.co/cNpPvp/mobile.jpg)
