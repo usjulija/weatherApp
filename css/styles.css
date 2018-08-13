@@ -184,12 +184,12 @@ footer a {
 
 @media screen and (min-width: 850px) {
   section {
-    width: 65%;
+    min-width: 65%;
   }
 }
 
 @media screen and (min-width: 1000px) {
   section {
-    width: 50%;
+    min-width: 50%;
   }
 }
