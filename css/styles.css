@@ -24,7 +24,7 @@ article {
 
 main {
   min-height: 100vh;
-  background-image: url(https://source.unsplash.com/TeX_yWATaBA/1500x1500);
+  background: #83aea5;
   background-size:cover;
   background-position:center;
 }
@@ -34,26 +34,42 @@ article {
 }
 
 section {
-  background: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(246,246,246,0.65) 47%, rgba(237,237,237,0.65) 100%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(246,246,246,0.85) 47%, rgba(237,237,237,0.85) 100%);
   color: #14213D;
   text-align: center;
   padding: 25px;
   box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
   /* border: 1px solid #FFFDF9;
   border-radius: 5px; */
-  min-width: 100vw;
+  min-width: 100%;
   min-height: 100vh;
 }
 
+.heading {
+  display: flex;
+  max-width: 200px;
+  align-items: center;
+}
+
+.heading img {
+  width: 35%;
+}
+
 button {
-  width: 50px;
-  height:50px;
-  border-radius: 50%;
+  border-radius: 10px;
+  width: 44%;
+  max-width: 120px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 12px 8px;
+  font-size: 1em;
   border: 0;
   background: #7485AA;
+  border-bottom: 5px solid #444d61;
+  color: white;
   box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
   cursor: pointer;
   margin-left: 10px;
+  position: relative;
 }
 
 button svg {
@@ -61,24 +77,76 @@ button svg {
   max-width: 50px;
 }
 
-button:hover,
-button:focus {
-  background: #BF5B00;
+button:active {
+  top: 2px;
   outline: 0;
 }
 
-.button-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+button:hover,
+button:focus {
+  background: #BF5B00;
+  border-bottom: 5px solid #673406;
+  outline: 0;
+}
+
+.search-buttons {
+  margin: 25px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 75px;
+  height: 50px;
+}
+
+.slider:focus {
+  outline: 0;
+  background: #BF5B00;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #7485AA;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 42px;
+  width: 42px;
+  left: 4px;
+  bottom: 4px;
+  background: url(../images/celsius.svg);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+    background: url(../images/fahrenheit.svg);
 }
 
 .image {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
-  background: #7485AA;
+  height: 80px;
+  width: 80px;
+  /* border-radius: 50%; */
+  /* box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54); */
+  /* background: #7485AA; */
   margin-top: 5px;
   margin-bottom: 25px;
 }

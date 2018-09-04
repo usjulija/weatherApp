@@ -1,4 +1,6 @@
 const main = document.getElementById("app");
+const locationButton = document.getElementById("location");
+const searchButton = document.getElementById("search");
 
 //get weather based on current location
 function getLocation() {
@@ -19,6 +21,8 @@ function getLocation() {
     fetch(url)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
+
         //get 5 days and save them as array of objects
         let forecastData = [];
         forecastData.push(data.list['0']);
@@ -43,29 +47,23 @@ function getLocation() {
           forecast.push(dayData);
         });
 
-        //display informationin the app
+        //display information in the app
         main.innerHTML = `
-        <div class="button-container">
-          <h2><span>${data.city.name}</span>, <span>${data.city.country}</span></h2>
-          <button onclick="temperatureToggle()" aria-label="temperarture converting button">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 560 560">
-              <path fill="#9BC9FF" d="M360 292V156c0-40-32-72-72-72v64h16v175a52 52 0 0 1-16 101v56a108 108 0 0 0 72-188zm0 0"/>
-              <path fill="#D1E7F8" d="M236 372c0-23 15-43 36-49V148h16V84c-40 0-72 32-72 72v136a108 108 0 0 0 72 188v-56c-29 0-52-23-52-52zm0 0"/>
-              <path fill="#FF6243" d="M272 323a52 52 0 0 0 16 101V148h-16v175zm0 0"/>
-              <path fill="#FF3501" d="M340 372c0-23-15-43-36-49V148h-16v276c29 0 52-23 52-52zm0 0"/>
-              <path fill="#FFFFFF" d="M49 372c1 4 5 7 9 7l4-1c5-1 8-7 6-13A233 233 0 0 1 285 52c63-1 122 23 166 67h-26c-6 0-10 5-10 10 0 6 5 11 10 11l51-1a10 10 0 0 0 11-10l-1-52c0-5-5-10-10-10-6 0-11 5-11 11l1 26a253 253 0 0 0-360 4 254 254 0 0 0-57 264zm0 0M455 450c-90 92-238 93-330 4l26-1c6 0 10-5 10-10 0-6-5-10-10-10h-51c-6 0-11 5-11 11l1 51c0 5 5 10 10 10 6 0 11-5 11-10l-1-27a254 254 0 0 0 427-130c10-46 6-94-10-138-1-5-7-8-13-6-5 2-8 8-6 13 31 85 10 178-53 243zm0 0"/>
-            </svg>
-          </button>
-        </div>
+        <label class="switch">
+          <input type="checkbox">
+            <span class="slider" tabindex=0 aria-label="temperarture converting button"></span>
+        </label>
+        <h2><span>${data.city.name}</span>, <span>${data.city.country}</span></h2>
         <h3>Today</h3>
         <h4>${forecast[0].dayOfWeek}</h4>
         <p>${forecast[0].description}</p>
-        <p class="temperature C">${forecast[0].temp}&#176; C</p>
+        <p class="temperature C">${forecast[0].temp}&#176;C</p>
         <div class="image">
-          <img src="http://openweathermap.org/img/w/${forecast[0].icon}.png" alt="weather icon">
+          <img src="./images/${forecast[0].icon}.svg" alt="weather icon">
         </div>
         `;
 
+        //add forecast
         const weaterContainer = document.createElement('div');
         weaterContainer.classList.add('forecast');
         main.appendChild(weaterContainer);
@@ -89,7 +87,7 @@ function getLocation() {
           imageContainer.classList.add('image');
 
           const img = document.createElement('img');
-          img.src = `http://openweathermap.org/img/w/${day.icon}.png`;
+          img.src = `./images/${day.icon}.svg`;
           img.alt = day.description;
 
           weaterContainer.appendChild(container);
@@ -101,8 +99,18 @@ function getLocation() {
         })
 
         //choose unplash picture based on current weather
-        unsplashUrl = `https://api.unsplash.com/search/photos?page=1&query=${data.list['0'].weather['0'].main}`;
+        unsplashUrl = `https://api.unsplash.com/search/photos?page=10&query=${data.list['0'].weather['0'].main}`;
         fetchUnsplash(unsplashUrl);
+
+        //add event listeners
+        document.querySelector('input[type=checkbox]').addEventListener('click', temperatureToggle);
+        document.querySelector('.slider').addEventListener('keydown', (e) => {
+          if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+            temperatureToggle();
+          } else {
+            return;
+          }
+        });
       })
       .catch(() => {
         console.log("error with weather API");
@@ -114,6 +122,7 @@ function getLocation() {
     main.innerHTML = "<p>We were unable to retrieve your location, please allow browser to know your current location</p>";
   }
 
+  //loading message
   main.innerHTML = `
     <div class='locating'>
       <svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 560 560" width=50>
@@ -155,8 +164,8 @@ function convertDayOfWeek(dateNumber) {
   return dayOfWeek;
 }
 
+//fetch background image depending on weather summary
 function fetchUnsplash(unsplashUrl) {
-  //fetch background image depending on weather summary
   let background = document.getElementById('background');
 
   fetch(unsplashUrl, {
@@ -166,31 +175,38 @@ function fetchUnsplash(unsplashUrl) {
     })
   .then(response => response.json())
   .then(data => {
-    background.style.backgroundImage = `url(${data.results['0'].urls.regular})`;
+    console.log(data);
+    let randomiser = Math.floor(Math.random() * 10);
+    console.log(randomiser);
+    background.style.backgroundImage = `url(${data.results[randomiser].urls.regular})`;
+    console.log(background.style.backgroundImage);
   })
   .catch(() => console.log('An error occured from Unsplash'));
 }
 
 //Celsius to Fahrenheit and back converter
 function temperatureToggle() {
+  const checkbox = document.querySelector('input[type=checkbox]');
   let temperatures = document.querySelectorAll('.temperature');
-  console.log(temperatures);
+
   temperatures.forEach(item => {
     if (item.classList.contains('C')) {
       let oldValue = parseFloat(item.innerHTML);
       let newValue = Math.round((oldValue*1.8)+32);
       item.classList.remove('C');
       item.classList.add('F');
-      item.innerHTML = `${newValue}&#176 F`;
+      item.innerHTML = `${newValue}&#176F`;
+      checkbox.checked = true;
     } else if (item.classList.contains('F')) {
       let oldValue = parseFloat(item.innerHTML);
       let newValue = Math.round((oldValue-32)/1.8);
       item.classList.remove('F');
       item.classList.add('C');
-      item.innerHTML = `${newValue}&#176 C`;
+      item.innerHTML = `${newValue}&#176C`;
+      checkbox.checked = false;
     }
   })
 }
 
-//initiates main function
-getLocation();
+//event listeners for buttons
+locationButton.addEventListener('click', getLocation);
