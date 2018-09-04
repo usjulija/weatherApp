@@ -39,12 +39,11 @@ section {
   text-align: center;
   padding: 25px;
   box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54);
-  /* border: 1px solid #FFFDF9;
-  border-radius: 5px; */
   min-width: 100%;
   min-height: 100vh;
 }
 
+/* Logo an name */
 .heading {
   display: flex;
   max-width: 200px;
@@ -55,7 +54,8 @@ section {
   width: 35%;
 }
 
-button {
+/* search buttons style */
+.search-buttons button {
   border-radius: 10px;
   width: 44%;
   max-width: 120px;
@@ -70,20 +70,16 @@ button {
   cursor: pointer;
   margin-left: 10px;
   position: relative;
+  transition: all 0.2s ease;
 }
 
-button svg {
-  padding: 5px;
-  max-width: 50px;
-}
-
-button:active {
+.search-buttons button:active {
   top: 2px;
   outline: 0;
 }
 
-button:hover,
-button:focus {
+.search-buttons button:hover,
+.search-buttons button:focus {
   background: #BF5B00;
   border-bottom: 5px solid #673406;
   outline: 0;
@@ -93,6 +89,45 @@ button:focus {
   margin: 25px;
 }
 
+/* app style for search */
+.searchForm {
+  display: flex;
+  justify-content: center;
+}
+
+.searchForm input {
+  width: 80%;
+  height: 50px;
+  padding: 12px 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  background: #B2DBBF;
+  color: #247BA0;
+  border: 0;
+}
+
+.searchForm input:focus {
+  outline: 0;
+  background: #F3FFBD;
+}
+
+.searchForm button {
+  width: 50px;
+  height: 50px;
+  background:#70C1B3;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 25px;
+}
+
+.searchForm button:hover,
+.searchForm button:focus {
+  background: #7485AA;
+  outline: 0;
+}
+
+/* temperature toggle button */
 .switch {
   position: relative;
   display: inline-block;
@@ -144,11 +179,13 @@ input:checked + .slider:before {
 .image {
   height: 80px;
   width: 80px;
-  /* border-radius: 50%; */
-  /* box-shadow: 2px 7px 29px -4px rgba(0,0,0,0.54); */
-  /* background: #7485AA; */
   margin-top: 5px;
   margin-bottom: 25px;
+}
+
+.main {
+  width: 100px;
+  height: 100px;
 }
 
 h1 {

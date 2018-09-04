@@ -1,18 +1,16 @@
-# Current Weather Checker
-## Project Overview:
-A single page app, showing current weather and 4 days forecast, based on current location. Temperature can be viewed either in Celsius or Fahrenheit.
+# what's the weather?
+A single page application, helping to check current weather either based on current location or on search input. Temperature can be viewed either in Fahrenheit or in Celsius.
 
 ## Project specifics
-Project is inspired by freeCodeCamp challenge. Project is built using JavaScript, ES6 syntax. Data on weather is retrieved using openWeatherMap API. Background image changes based on current weather - feature implemented using Unsplash API.
- * [FreeCodeCamp project specifications](https://learn.freecodecamp.org/coding-interview-prep/take-home-projects/show-the-local-weather)
+Application is built from scratch using JavaScript (ES6 syntax). Data on weather is retrieved using openWeatherMap API. Background image changes randomly based on current weather - feature implemented using Unsplash API.
+
 * OpenWeatherMap API
 * Unsplash API
+* Icons designed by [flaticon](https://www.flaticon.com/)
 
 ## How to install
 Clone repository and open index.html file.
 
 ## App preview
 * [Life preview](https://usjulija.github.io/weatherApp/)
-* ![App preview](https://image.ibb.co/mRM7gU/ipad.jpg)
-* Mobile version:
-* ![App preview](https://image.ibb.co/cNpPvp/mobile.jpg)
+* ![App preview](https://preview.ibb.co/kNceue/weather_App.jpg)

@@ -1,123 +1,28 @@
 const main = document.getElementById("app");
 const locationButton = document.getElementById("location");
 const searchButton = document.getElementById("search");
+const apiKey = "6df34740c7766e4c99784637a68ebe70";
 
 //get weather based on current location
 function getLocation() {
-
+  //check is location navigation is supported
   if (!navigator.geolocation){
     main.innerHTML = "<p>Geolocation is not supported by your browser</p>";
     return;
   }
-
+  //take position lat and lang
   function success(position) {
     let latitude  = position.coords.latitude;
     let longitude = position.coords.longitude;
-    console.log(latitude, longitude);
     let unsplashUrl;
-    //fetch weather data for current location
-    const apiKey = "6df34740c7766e4c99784637a68ebe70";
+
+    //modify url
     let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-
-        //get 5 days and save them as array of objects
-        let forecastData = [];
-        forecastData.push(data.list['0']);
-        forecastData.push(data.list['8']);
-        forecastData.push(data.list['16']);
-        forecastData.push(data.list['24']);
-        forecastData.push(data.list['32']);
-
-        //filter out only needed information, convert date to the day of weeks
-        let forecast = [];
-        forecastData.forEach((day) => {
-          //convert date to the week day
-          let dayNumber = new Date(day.dt * 1000).getDay();
-
-          let dayData = {
-            "dayOfWeek": convertDayOfWeek(dayNumber),
-            "description": day.weather['0'].description,
-            "temp": Math.round(day.main.temp),
-            "icon": day.weather['0'].icon
-          };
-
-          forecast.push(dayData);
-        });
-
-        //display information in the app
-        main.innerHTML = `
-        <label class="switch">
-          <input type="checkbox">
-            <span class="slider" tabindex=0 aria-label="temperarture converting button"></span>
-        </label>
-        <h2><span>${data.city.name}</span>, <span>${data.city.country}</span></h2>
-        <h3>Today</h3>
-        <h4>${forecast[0].dayOfWeek}</h4>
-        <p>${forecast[0].description}</p>
-        <p class="temperature C">${forecast[0].temp}&#176;C</p>
-        <div class="image">
-          <img src="./images/${forecast[0].icon}.svg" alt="weather icon">
-        </div>
-        `;
-
-        //add forecast
-        const weaterContainer = document.createElement('div');
-        weaterContainer.classList.add('forecast');
-        main.appendChild(weaterContainer);
-
-        forecast.forEach((day, index) => {
-          if (index < 1) return; //do not include the first item
-
-          const container = document.createElement('div');
-          const heading = document.createElement('h4');
-          heading.innerHTML = day.dayOfWeek;
-
-          const weatherDescription = document.createElement('p');
-          weatherDescription.innerHTML = day.description;
-
-          const temp = document.createElement('p');
-          temp.classList.add('temperature');
-          temp.classList.add('C');
-          temp.innerHTML = `${day.temp}&#176 C`;
-
-          const imageContainer = document.createElement('div');
-          imageContainer.classList.add('image');
-
-          const img = document.createElement('img');
-          img.src = `./images/${day.icon}.svg`;
-          img.alt = day.description;
-
-          weaterContainer.appendChild(container);
-          container.appendChild(heading);
-          container.appendChild(weatherDescription);
-          container.appendChild(temp);
-          container.appendChild(imageContainer);
-          imageContainer.appendChild(img);
-        })
-
-        //choose unplash picture based on current weather
-        unsplashUrl = `https://api.unsplash.com/search/photos?page=10&query=${data.list['0'].weather['0'].main}`;
-        fetchUnsplash(unsplashUrl);
-
-        //add event listeners
-        document.querySelector('input[type=checkbox]').addEventListener('click', temperatureToggle);
-        document.querySelector('.slider').addEventListener('keydown', (e) => {
-          if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
-            temperatureToggle();
-          } else {
-            return;
-          }
-        });
-      })
-      .catch(() => {
-        console.log("error with weather API");
-        main.innerHTML = "<p>Sorry, not possible to  get data on current weather, please try again later</p>";
-      });
+    //fetch data
+    fetchWeather(url);
   }
 
+  //handle error whren geolocation went wrong
   function error() {
     main.innerHTML = "<p>We were unable to retrieve your location, please allow browser to know your current location</p>";
   }
@@ -132,6 +37,134 @@ function getLocation() {
     <p>...Locating</p>`;
 
   navigator.geolocation.getCurrentPosition(success, error);
+}
+
+//get weather based on search input
+function searchlocation() {
+  //add search form
+  main.innerHTML = `
+    <div>
+      <form class="searchForm">
+        <input type="search" class="searchInput" placeholder="Enter city name..." name="search">
+        <button type="submit">🔍</button>
+      </form>
+    </div>
+    <ul class="container"></ul>
+  `;
+
+  //add event listner to the search form
+  document.querySelector('.searchForm').addEventListener('submit', searchInitiate);
+
+  function searchInitiate(e) {
+    e.preventDefault();
+
+    const input = e.srcElement['0'].value.trim();
+
+    //modify url
+    let url = `https://api.openweathermap.org/data/2.5/forecast?q=${input}&appid=${apiKey}&units=metric`;
+    //fetch data
+    fetchWeather(url);
+  }
+}
+
+//function fetching data from weather API
+function fetchWeather(url) {
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      //get 5 days and save them as array of objects
+      let forecastData = [];
+      forecastData.push(data.list['0']);
+      forecastData.push(data.list['8']);
+      forecastData.push(data.list['16']);
+      forecastData.push(data.list['24']);
+      forecastData.push(data.list['32']);
+
+      //filter out only needed information, convert date to the day of weeks
+      let forecast = [];
+      forecastData.forEach((day) => {
+        //convert date to the week day
+        let dayNumber = new Date(day.dt * 1000).getDay();
+
+        let dayData = {
+          "dayOfWeek": convertDayOfWeek(dayNumber),
+          "description": day.weather['0'].description,
+          "temp": Math.round(day.main.temp),
+          "icon": day.weather['0'].icon
+        };
+
+        forecast.push(dayData);
+      });
+
+      //display information in the app
+      main.innerHTML = `
+      <label class="switch">
+        <input type="checkbox">
+          <span class="slider" tabindex=0 aria-label="temperarture converting button"></span>
+      </label>
+      <h2><span>${data.city.name}</span>, <span>${data.city.country}</span></h2>
+      <h3>Today</h3>
+      <h4>${forecast[0].dayOfWeek}</h4>
+      <p>${forecast[0].description}</p>
+      <p class="temperature C">${forecast[0].temp}&#176;C</p>
+      <div class="image main">
+        <img src="./images/${forecast[0].icon}.svg" alt="weather icon">
+      </div>
+      `;
+
+      //add forecast
+      const weaterContainer = document.createElement('div');
+      weaterContainer.classList.add('forecast');
+      main.appendChild(weaterContainer);
+
+      forecast.forEach((day, index) => {
+        if (index < 1) return; //do not include the first item
+
+        const container = document.createElement('div');
+        const heading = document.createElement('h4');
+        heading.innerHTML = day.dayOfWeek;
+
+        const weatherDescription = document.createElement('p');
+        weatherDescription.innerHTML = day.description;
+
+        const temp = document.createElement('p');
+        temp.classList.add('temperature');
+        temp.classList.add('C');
+        temp.innerHTML = `${day.temp}&#176 C`;
+
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add('image');
+
+        const img = document.createElement('img');
+        img.src = `./images/${day.icon}.svg`;
+        img.alt = day.description;
+
+        weaterContainer.appendChild(container);
+        container.appendChild(heading);
+        container.appendChild(weatherDescription);
+        container.appendChild(temp);
+        container.appendChild(imageContainer);
+        imageContainer.appendChild(img);
+      })
+
+      //choose unplash picture based on current weather
+      unsplashUrl = `https://api.unsplash.com/search/photos?page=10&query=${data.list['0'].weather['0'].main}`;
+      fetchUnsplash(unsplashUrl);
+
+      //add event listeners to temperature toggle button
+      document.querySelector('input[type=checkbox]').addEventListener('click', temperatureToggle);
+      document.querySelector('.slider').addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+          temperatureToggle();
+        } else {
+          return;
+        }
+      });
+    })
+    .catch(() => {
+      console.log("error with weather API");
+      main.innerHTML = "<p>Sorry, not possible to  get data on current weather, please try again later</p>";
+    });
 }
 
 //converts week's day number to word
@@ -160,7 +193,6 @@ function convertDayOfWeek(dateNumber) {
       dayOfWeek = "Saturday";
       break;
   }
-
   return dayOfWeek;
 }
 
@@ -175,11 +207,8 @@ function fetchUnsplash(unsplashUrl) {
     })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
     let randomiser = Math.floor(Math.random() * 10);
-    console.log(randomiser);
     background.style.backgroundImage = `url(${data.results[randomiser].urls.regular})`;
-    console.log(background.style.backgroundImage);
   })
   .catch(() => console.log('An error occured from Unsplash'));
 }
@@ -205,8 +234,9 @@ function temperatureToggle() {
       item.innerHTML = `${newValue}&#176C`;
       checkbox.checked = false;
     }
-  })
+  });
 }
 
 //event listeners for buttons
 locationButton.addEventListener('click', getLocation);
+searchButton.addEventListener('click', searchlocation);
