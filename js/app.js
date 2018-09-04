@@ -57,8 +57,7 @@ function searchlocation() {
 
   function searchInitiate(e) {
     e.preventDefault();
-
-    const input = e.srcElement['0'].value.trim();
+    const input = e.target['0'].value.trim();
 
     //modify url
     let url = `https://api.openweathermap.org/data/2.5/forecast?q=${input}&appid=${apiKey}&units=metric`;
